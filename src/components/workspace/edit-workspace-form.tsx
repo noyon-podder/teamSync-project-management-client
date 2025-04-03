@@ -12,8 +12,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "../ui/textarea";
+import { useAuthContext } from "@/context/auth-provider";
+import { useEffect } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { editWorkspaceMutationFn } from "@/lib/api";
+import { toast } from "@/hooks/use-toast";
+import useWorkspaceId from "@/hooks/use-workspace-id";
+import { Loader } from "lucide-react";
 
 export default function EditWorkspaceForm() {
+  const { workspace } = useAuthContext();
+  const queryClient = useQueryClient();
+  const workspaceId = useWorkspaceId();
+  const { mutate, isPending } = useMutation({
+    mutationFn: editWorkspaceMutationFn,
+  });
   const formSchema = z.object({
     name: z.string().trim().min(1, {
       message: "Workspace name is required",
@@ -29,8 +42,38 @@ export default function EditWorkspaceForm() {
     },
   });
 
+  useEffect(() => {
+    if (workspace) {
+      form.setValue("name", workspace.name);
+      form.setValue("description", workspace?.description || "");
+    }
+  }, [form, workspace]);
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    if (isPending) return;
+    const payload = {
+      workspaceId: workspaceId,
+      data: { ...values },
+    };
+
+    mutate(payload, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["workspace"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["userWorkspaces"],
+        });
+      },
+
+      onError: (error) => {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
+    });
   };
 
   return (
@@ -97,10 +140,10 @@ export default function EditWorkspaceForm() {
             {/* {canEditWorkspace && ( */}
             <Button
               className="flex place-self-end  h-[40px] text-white font-semibold"
-              disabled={false}
+              disabled={isPending}
               type="submit"
             >
-              {/* {false && <Loader className="animate-spin" />} */}
+              {isPending && <Loader className="animate-spin" />}
               Update Workspace
             </Button>
           </form>
