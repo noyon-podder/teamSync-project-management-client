@@ -45,8 +45,8 @@ export function WorkspaceSwitcher() {
   });
 
   const workspaces = data?.workspaces;
-  //poddersuvojit666@gmail.com
-  //@Suvojit2007
+
+  console.log("Workspace Check:", workspaces);
 
   React.useEffect(() => {
     if (workspaces?.length) {
@@ -56,7 +56,7 @@ export function WorkspaceSwitcher() {
 
       if (workspace) {
         setActiveWorkspace(workspace);
-        if (!workspaceId) navigate(`/workspace/${workspace._id}`);
+        if (!workspaceId) navigate(`/workspace/${workspace?._id}`);
       }
     }
   }, [workspaceId, workspaces, navigate]);
@@ -116,10 +116,9 @@ export function WorkspaceSwitcher() {
               <DropdownMenuLabel className="text-xs text-muted-foreground">
                 Workspaces
               </DropdownMenuLabel>
+              {isPending ? <Loader className=" w-5 h-5 animate-spin" /> : null}
 
-              {isPending ? <Loader className="w-5 h-5 animate-spin" /> : null}
-
-              {workspaces?.map((workspace) => (
+              {workspaces?.filter(Boolean)?.map((workspace) => (
                 <DropdownMenuItem
                   key={workspace?._id}
                   onClick={() => onSelect(workspace)}

@@ -25,6 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const workspaceId = useWorkspaceId();
   const navigate = useNavigate();
+
   const {
     data: authData,
     error: authError,
