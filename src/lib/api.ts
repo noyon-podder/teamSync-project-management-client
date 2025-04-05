@@ -1,6 +1,7 @@
 import API from "./axios-client";
 import {
   AllWorkspaceResponseType,
+  AnalyticsResponseType,
   CreateWorkspaceResponseType,
   CreateWorkspaceType,
   CurrentUserResponseType,
@@ -66,7 +67,12 @@ export const editWorkspaceMutationFn = async ({
   return response.data;
 };
 
-export const getWorkspaceAnalyticsQueryFn = async () => {};
+export const getWorkspaceAnalyticsQueryFn = async (
+  workspaceId: string
+): Promise<AnalyticsResponseType> => {
+  const response = await API.get(`/workspace/analytics/${workspaceId}`);
+  return response.data;
+};
 
 export const changeWorkspaceMemberRoleMutationFn = async () => {};
 
