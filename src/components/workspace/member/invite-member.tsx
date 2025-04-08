@@ -1,6 +1,8 @@
+import PermissionsGuard from "@/components/resuable/permission-guard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Permissions } from "@/constant";
 import { useAuthContext } from "@/context/auth-provider";
 import { toast } from "@/hooks/use-toast";
 import { BASE_ROUTE } from "@/routes/common/routePaths";
@@ -41,30 +43,32 @@ const InviteMember = () => {
         disable and create a new invite link for this Workspace at any time.
       </p>
 
-      {workspaceLoading ? (
-        <Loader className="w-8 h-8 animate-spin place-self-center flex" />
-      ) : (
-        <div className="flex py-3 gap-2">
-          <Label htmlFor="link" className="sr-only">
-            Link
-          </Label>
-          <Input
-            id="link"
-            disabled={true}
-            className="disabled:opacity-100 disabled:pointer-events-none"
-            value={inviteUrl}
-            readOnly
-          />
-          <Button
-            disabled={false}
-            className="shrink-0"
-            size="icon"
-            onClick={handleCopy}
-          >
-            {copied ? <CheckIcon /> : <CopyIcon />}
-          </Button>
-        </div>
-      )}
+      <PermissionsGuard showMessage requiredPermission={Permissions.ADD_MEMBER}>
+        {workspaceLoading ? (
+          <Loader className="w-8 h-8 animate-spin place-self-center flex" />
+        ) : (
+          <div className="flex py-3 gap-2">
+            <Label htmlFor="link" className="sr-only">
+              Link
+            </Label>
+            <Input
+              id="link"
+              disabled={true}
+              className="disabled:opacity-100 disabled:pointer-events-none"
+              value={inviteUrl}
+              readOnly
+            />
+            <Button
+              disabled={false}
+              className="shrink-0"
+              size="icon"
+              onClick={handleCopy}
+            >
+              {copied ? <CheckIcon /> : <CopyIcon />}
+            </Button>
+          </div>
+        )}
+      </PermissionsGuard>
     </div>
   );
 };
