@@ -4,6 +4,7 @@ import {
   AllProjectResponseType,
   ChangeWorkspaceMemberRoleType,
   CreateProjectPayloadType,
+  CreateTaskPayloadType,
   EditProjectPayloadType,
   ProjectByIdPayloadType,
   ProjectResponseType,
@@ -201,7 +202,18 @@ export const deleteProjectMutationFn = async ({
 //*******TASKS ********************************
 //************************* */
 
-export const createTaskMutationFn = async () => {};
+export const createTaskMutationFn = async ({
+  workspaceId,
+  projectId,
+  data,
+}: CreateTaskPayloadType) => {
+  const response = await API.post(
+    `/task/project/${projectId}/workspace/${workspaceId}/create`,
+    data
+  );
+
+  return response.data;
+};
 
 export const getAllTasksQueryFn = async () => {};
 
