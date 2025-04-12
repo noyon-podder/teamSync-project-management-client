@@ -173,9 +173,30 @@ export const getProjectByIdQueryFn = async ({
   return response.data;
 };
 
-export const getProjectAnalyticsQueryFn = async () => {};
+export const getProjectAnalyticsQueryFn = async ({
+  workspaceId,
+  projectId,
+}: {
+  workspaceId: string;
+  projectId: string;
+}): Promise<AnalyticsResponseType> => {
+  const response = await API.get(
+    `/project/${projectId}/workspace/${workspaceId}/analytics`
+  );
 
-export const deleteProjectMutationFn = async () => {};
+  return response.data;
+};
+
+export const deleteProjectMutationFn = async ({
+  workspaceId,
+  projectId,
+}: ProjectByIdPayloadType): Promise<{ message: string }> => {
+  const response = await API.delete(
+    `/project/${projectId}/workspace/${workspaceId}/delete`
+  );
+
+  return response.data;
+};
 
 //*******TASKS ********************************
 //************************* */

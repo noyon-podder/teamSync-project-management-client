@@ -97,7 +97,7 @@ export default function EditProjectForm(props: {
           variant: "success",
         });
 
-        // setTimeout(() => onClose(), 100);
+        setTimeout(() => onClose(), 100);
       },
       onError: (error) => {
         toast({
@@ -108,7 +108,7 @@ export default function EditProjectForm(props: {
       },
     });
 
-    onClose();
+    // onClose();
   };
 
   return (
