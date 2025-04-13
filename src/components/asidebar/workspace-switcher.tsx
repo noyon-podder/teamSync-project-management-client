@@ -46,8 +46,6 @@ export function WorkspaceSwitcher() {
 
   const workspaces = data?.workspaces;
 
-  console.log("Workspace Check:", workspaces);
-
   React.useEffect(() => {
     if (workspaces?.length) {
       const workspace = workspaceId
