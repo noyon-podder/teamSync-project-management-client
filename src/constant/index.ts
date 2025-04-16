@@ -7,6 +7,7 @@ export const TaskStatusEnum = {
 } as const;
 
 export const TaskPriorityEnum = {
+  URGENT: "URGENT",
   LOW: "LOW",
   MEDIUM: "MEDIUM",
   HIGH: "HIGH",
